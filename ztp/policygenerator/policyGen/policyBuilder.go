@@ -40,7 +40,7 @@ func (pbuilder *PolicyBuilder) Build(policyGenTemp utils.PolicyGenTemplate) (map
 	if len(policyGenTemp.Spec.SourceFiles) > 0 {
 		subjects := make([]utils.Subject, 0)
 		for _, sFile := range policyGenTemp.Spec.SourceFiles {
-			sPolicyFile, err := pbuilder.fHandler.ReadSourceFile(sFile.FileName)
+			sPolicyFile, err := pbuilder.fHandler.ReadSourceFile(sFile.FileName, policyGenTemp.Spec.SourceCRPath)
 			if err != nil {
 				return policies, err
 			}

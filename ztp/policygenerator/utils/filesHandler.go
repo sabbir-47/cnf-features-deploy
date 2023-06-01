@@ -47,23 +47,28 @@ func (fHandler *FilesHandler) GetSourceFiles(subDir string) ([]os.DirEntry, erro
 	return fHandler.getFiles(fHandler.sourceDir + "/" + subDir)
 }
 
-func (fHandler *FilesHandler) ReadSourceFile(fileName string) ([]byte, error) {
-	if fHandler.sourceDir == SourceCRsPath {
-		return fHandler.ReadSourceCRFile(fileName)
+func (fHandler *FilesHandler) ReadSourceFile(fileName string, crPath *[]string) ([]byte, error) {
+
+	//	log.Printf("path %v ** filename: %v\n", crPath, fileName)
+	if crPath == nil {
+		if fHandler.sourceDir == SourceCRsPath {
+			return fHandler.ReadSourceCRFile(fileName)
+		}
+		return fHandler.ReadFile(fHandler.sourceDir + "/" + fileName)
 	}
-	return fHandler.ReadFile(fHandler.sourceDir + "/" + fileName)
+
+	return ReadFromSourceCRPath(fileName, crPath)
+
 }
 
 func (fHandler *FilesHandler) ReadSourceCRFile(fileName string) ([]byte, error) {
 	var (
-		gitDir   = ""
-		localDir = ""
 		err      error
 		fileByte []byte
 	)
 
 	// current working directory in git
-	gitDir, err = os.Getwd()
+	gitDir, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +76,7 @@ func (fHandler *FilesHandler) ReadSourceCRFile(fileName string) ([]byte, error) 
 	fileByte, err = os.ReadFile(sourceCRPathGit)
 	if errors.Is(err, os.ErrNotExist) {
 		// path of the local executable
-		localDir, err = os.Executable()
+		localDir, err := os.Executable()
 		if err != nil {
 			return nil, err
 		}

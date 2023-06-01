@@ -1,0 +1,46 @@
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "group-du"
+  namespace: "group-du-policies"
+spec:
+  sourceCRPath:
+  # - https://github.com/openshift-kni/cnf-features-deploy/ztp/source-crs?ref=release-4.13
+    - http://10.88.0.17/content/source-crs
+  # - http://localhost:8888/content/source-crs
+  mcp: "worker-du"
+  bindingRules:
+    group-du: ""
+  sourceFiles:
+    - fileName: MachineConfigPool.yaml
+      policyName: "mcp-worker-du-policy"
+    - fileName: MachineConfigAcceleratedStartup.yaml
+      policyName: "mc-accelerated-policy-worker-du"
+      metadata:
+        name: 04-accelerated-container-startup-worker-du
+        labels:
+          machineconfiguration.openshift.io/role: worker-du
+    - fileName: MachineConfigAcceleratedStartup.yaml
+      policyName: "config-policy"
+      metadata:
+        name: 02-master-workload-partitioning
+      spec:
+        config:
+          storage:
+            files:
+              - contents:
+                  source: data:text/plain;charset=utf-8;base64,MYBASE64CONFIGCrio=
+                mode: 420
+                overwrite: true
+                path: /etc/crio/crio.conf.d/01-workload-partitioning
+                user:
+                  name: root
+              - contents:
+                  source: data:text/plain;charset=utf-8;base64,MYBASE64CONFIGKube==
+                mode: 420
+                overwrite: true
+                path: /etc/kubernetes/openshift-workload-pinning
+                user:
+                  name: root
+
