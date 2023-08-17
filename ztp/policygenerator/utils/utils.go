@@ -44,6 +44,7 @@ type PolicyGenTempSpec struct {
 	ComplianceType       string             `yaml:"complianceType,omitempty"`
 	EvaluationInterval   EvaluationInterval `yaml:"evaluationInterval,omitempty"`
 	SourceFiles          []SourceFile       `yaml:"sourceFiles,omitempty"`
+	SourceCRPath         *[]string          `yaml:"sourceCRPath,omitempty"`
 }
 
 func (pgt *PolicyGenTempSpec) UnmarshalYAML(unmarshal func(interface{}) error) error {

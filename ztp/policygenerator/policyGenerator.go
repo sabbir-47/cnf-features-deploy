@@ -43,9 +43,11 @@ func main() {
 	}
 
 	InitiatePolicyGen(fHandler, policyGenTemps, *wrapInPolicy)
+	log.Println("We are done!")
 }
 
 func InitiatePolicyGen(fHandler *utils.FilesHandler, pgtFiles []string, wrapInPolicy bool) {
+
 	for _, file := range pgtFiles {
 
 		kindType := utils.KindType{}
@@ -101,7 +103,6 @@ func InitiatePolicyGen(fHandler *utils.FilesHandler, pgtFiles []string, wrapInPo
 					}
 				}
 				if pErr == nil {
-					// write to file when out dir is provided, otherwise write to standard output
 					if fHandler.OutDir != utils.UnsetStringValue {
 						err := fHandler.WriteFile(k+utils.FileExt, policy)
 						if err != nil {

@@ -95,6 +95,10 @@ spec:
                         The minimum elapsed time before a ConfigurationPolicy is reevaluated when in the noncompliant state. Default to 10s.
                         Set the value to “never” to disable the evaluation interval.
                       type: string
+                sourceCRPath:
+                  items:
+                    type: string
+                  type: array      
                 sourceFiles:
                   type: array
                   items:

@@ -8,6 +8,7 @@ KUSTOMIZE_VERSION=4.4.0
 KUSTOMIZE := $(if $(shell command -v kustomize 2>/dev/null), $(shell command -v kustomize), $(KUSTOMIZE_BIN))
 POLICYGEN_DIR := ../policygenerator
 SOURCE_CRS_DIR := ../source-crs
+SOURCE_CRS_DIR_TEST := ../sourceCRDir
 
 .PHONY: build test gen-files clean
 
@@ -16,6 +17,7 @@ build:
 	$(MAKE) -C $(POLICYGEN_DIR) build
 	mkdir -p $(POLICYGEN_KUSTOMIZE_DIR)
 	cp -r $(SOURCE_CRS_DIR) $(POLICYGEN_KUSTOMIZE_DIR)/
+	cp -r $(SOURCE_CRS_DIR_TEST) $(POLICYGEN_KUSTOMIZE_DIR)/
 	cp $(POLICYGEN_DIR)/policygenerator $(POLICYGEN_KUSTOMIZE_DIR)/PolicyGenTemplate
 
 $(KUSTOMIZE_BIN):
